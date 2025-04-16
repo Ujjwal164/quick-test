@@ -56,6 +56,7 @@ const AddTestRun = () => {
   const [state, setState] = useState("includeAll");
   const [totalTestcases, setTotalTestcases] = useState(0);
   const [isDuplicating, setIsDuplicating] = useState(false);
+  const [isTestCaseConfirmed, setIsTestCaseConfirmed] = useState(true);
 
   const returnToMainPage = () =>
     navigate(`${appRoutes.PROJECTS}/${params.pid}/${projectRoutes.TESTRUNS}`);
@@ -309,6 +310,7 @@ const AddTestRun = () => {
                     totalTestcases={totalTestcases}
                     setTotalTestcases={setTotalTestcases}
                     initialValues={initialValues.testCaseIds}
+                    setIsTestCaseConfirmed={setIsTestCaseConfirmed}
                   />
                 </div>
                 <FormSubmitPanel
@@ -318,6 +320,7 @@ const AddTestRun = () => {
                   onCancel={returnToMainPage}
                   loading={apiloading}
                   validSubmit={false}
+                  disabled={state === "includeSpecific" && !isTestCaseConfirmed}
                   submitTitle={isDuplicating ? t("Clone") : t("Create")}
                 />
               </Form>

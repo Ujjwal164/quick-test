@@ -223,7 +223,6 @@ export default function Table(props: Props) {
                                 />
                               </button>
                             )}
-
                             <button
                               data-tooltip-id="test-run-table-tooltip-id"
                               data-tooltip-content={t("Delete")}

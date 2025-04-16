@@ -16,12 +16,22 @@ import { useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
 import { showError } from "../../Toaster/ToasterFun";
 
+// First, update the interface at the top of the file
+interface SelectionModalProps {
+  showModal: boolean;
+  setShowModal: (show: boolean) => void;
+  setTotalTestcases: (count: number) => void;
+  initialValues: any[];
+  onConfirm: () => void;
+}
+
 const SelectionModal = ({
   showModal,
   setShowModal,
   setTotalTestcases,
   initialValues,
-}: any) => {
+  onConfirm,
+}: SelectionModalProps) => {
   const defaultTestCasesIds =
     Object.values(initialValues).map((item: any) => item.testCaseId) || [];
   const { t } = useTranslation();
@@ -74,11 +84,20 @@ const SelectionModal = ({
     if (params?.pid) getTestcases();
   }, [getTestcases, params?.pid]);
 
+  // Modify the submitSections function
   const submitSections = () => {
     setFieldValue("sectionIds", selectedSectionIds);
     setFieldValue("testCaseIds", selectedTestCaseIds);
     const noOfTestcases = countAllTestcases();
     setTotalTestcases(noOfTestcases);
+    onConfirm(); // Call onConfirm when sections are submitted
+    setShowModal(false);
+  };
+
+  // Modify the cancel handler to reset confirmation
+  const handleCancel = () => {
+    setSelectedSectionIds(values.sectionIds);
+    setSelectedTestCaseIds([]);
     setShowModal(false);
   };
 
@@ -185,10 +204,14 @@ const SelectionModal = ({
                   </div>
                 </div>
                 <div className="flex justify-end gap-4" id="buttons">
-                  <Button onClick={submitSections} className="order-last ">
+                  <Button 
+                    onClick={submitSections} 
+                    className="order-last"
+                    disabled={selectedTestCaseIds.length === 0} // Disable if no test cases selected
+                  >
                     {t("Confirm")}
                   </Button>
-                  <CancelButton onClick={() => setShowModal(false)}>
+                  <CancelButton onClick={handleCancel}>
                     {t("Cancel")}
                   </CancelButton>
                 </div>

@@ -16,7 +16,6 @@ export default function Button(props: any) {
   delete propsNew["loading"];
 
   return (
-    <>
       <button
         type="submit"
         {...propsNew}
@@ -51,6 +50,5 @@ export default function Button(props: any) {
           props?.children
         ) : null}
       </button>
-    </>
   );
 }

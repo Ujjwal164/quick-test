@@ -11,6 +11,7 @@ interface IProps {
   toched?: boolean;
   idForSubmit: string;
   dataAttr?: string;
+  disabled?:boolean
 }
 
 export const FormSubmitPanel = ({
@@ -21,6 +22,7 @@ export const FormSubmitPanel = ({
   validateFunc,
   idForSubmit,
   dataAttr,
+  disabled,
 }: IProps) => {
   const { t } = useTranslation();
 
@@ -38,7 +40,7 @@ export const FormSubmitPanel = ({
       <Button
         data-cy={dataAttr}
         id={idForSubmit}
-        disabled={validSubmit}
+        disabled={validSubmit || disabled}
         onMouseDown={validateFunc && validateFunc}
         loading={loading}
         type="submit"

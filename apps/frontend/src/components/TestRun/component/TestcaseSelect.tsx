@@ -2,13 +2,23 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import SelectionModal from "./SelectionModal";
 
+interface TestcaseSelectProps {
+  state: string;
+  setState: (state: string) => void;
+  totalTestcases: number;
+  setTotalTestcases: (count: number) => void;
+  initialValues: any[];
+  setIsTestCaseConfirmed: (confirmed: boolean) => void;
+}
+
 const TestcaseSelect = ({
   state,
   setState,
   totalTestcases,
   setTotalTestcases,
   initialValues,
-}: any) => {
+  setIsTestCaseConfirmed,
+}: TestcaseSelectProps) => {
   const { t } = useTranslation();
   const [showSpecific, setShowSpecific] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -29,6 +39,16 @@ const TestcaseSelect = ({
       setShowSpecific(false);
     }
   }, [state]);
+
+  // Add this useEffect to handle confirmation state
+  useEffect(() => {
+    if (state === "includeSpecific") {
+      setIsTestCaseConfirmed(false);
+    } else {
+      setIsTestCaseConfirmed(true);
+    }
+  }, [state, setIsTestCaseConfirmed]);
+
   return (
     <div className="space-y-6">
       <hr></hr>
@@ -97,6 +117,7 @@ const TestcaseSelect = ({
         setShowModal={setShowModal}
         setTotalTestcases={setTotalTestcases}
         initialValues={initialValues}
+        onConfirm={() => setIsTestCaseConfirmed(true)}
       />
     </div>
   );
